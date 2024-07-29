@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import axios from 'axios';
+import type { NextApiRequest, NextApiResponse } from "next";
+import axios from "axios";
 
 type Video = {
   title: string;
@@ -17,15 +17,18 @@ export default async function handler(
   res: NextApiResponse<Video[] | { error: string }>
 ): Promise<void> {
   try {
-    const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-      params: {
-        key: API_KEY,
-        channelId: CHANNEL_ID,
-        part: 'snippet',
-        order: 'date',
-        maxResults: 20,
-      },
-    });
+    const response = await axios.get(
+      "https://www.googleapis.com/youtube/v3/search",
+      {
+        params: {
+          key: API_KEY,
+          channelId: CHANNEL_ID,
+          part: "snippet",
+          order: "date",
+          maxResults: 30,
+        },
+      }
+    );
 
     const videos: Video[] = response.data.items.map((item: any) => ({
       title: item.snippet.title,
@@ -37,7 +40,7 @@ export default async function handler(
 
     res.status(200).json(videos);
   } catch (error) {
-    console.error('Error fetching videos:', error);
-    res.status(500).json({ error: 'Error fetching videos' });
+    console.error("Error fetching videos:", error);
+    res.status(500).json({ error: "Error fetching videos" });
   }
 }
