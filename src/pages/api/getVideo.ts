@@ -1,6 +1,6 @@
 export const runtime = "edge";
 import type { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 type Video = {
   title: string;
@@ -45,30 +45,43 @@ export default async function handler(
     }));
 
     res.status(200).json(videos);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching videos:", error);
 
     if (axios.isAxiosError(error)) {
-      if (error.response) {
-        // 서버가 응답을 했지만, 2xx 범위의 상태 코드는 아님
-        console.error("Error response:", error.response.data);
-        res
-          .status(500)
-          .json({
-            error: `Error fetching videos: ${error.response.data.error.message}`,
-          });
-      } else if (error.request) {
+      const axiosError = error as AxiosError;
+
+      if (axiosError.response) {
+        const status = axiosError.response.status;
+        const data = axiosError.response.data;
+
+        if (typeof data === "object" && data !== null && "error" in data) {
+          // 유효한 에러 메시지가 있는 경우
+          const errorMessage = (data as { error: { message: string } }).error
+            .message;
+          console.error("Error response:", errorMessage);
+          res
+            .status(status)
+            .json({ error: `Error fetching videos: ${errorMessage}` });
+        } else {
+          // 에러 메시지가 유효하지 않은 경우
+          console.error("Error response:", data);
+          res
+            .status(status)
+            .json({ error: `Error fetching videos: ${JSON.stringify(data)}` });
+        }
+      } else if (axiosError.request) {
         // 요청이 만들어졌으나, 응답을 받지 못함
-        console.error("Error request:", error.request);
+        console.error("Error request:", axiosError.request);
         res
           .status(500)
           .json({ error: "Error fetching videos: No response received" });
       } else {
         // 요청을 만들던 중에 에러가 발생
-        console.error("Error message:", error.message);
+        console.error("Error message:", axiosError.message);
         res
           .status(500)
-          .json({ error: `Error fetching videos: ${error.message}` });
+          .json({ error: `Error fetching videos: ${axiosError.message}` });
       }
     } else {
       console.error("Unexpected error:", error);
