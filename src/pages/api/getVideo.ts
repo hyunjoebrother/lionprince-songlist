@@ -1,4 +1,4 @@
-export const runtime = "nodejs";
+export const runtime = "edge";
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
@@ -45,8 +45,24 @@ export default async function handler(
     }));
 
     res.status(200).json(videos);
-  } catch (error) {
-    console.error("Error fetching videos:", error);
-    res.status(500).json({ error: "Error fetching videos" });
+  } catch (error: any) {
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      res
+        .status(500)
+        .json({
+          error: "Error fetching videos: " + error.response.data.error.message,
+        });
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+      res
+        .status(500)
+        .json({ error: "Error fetching videos: No response received" });
+    } else {
+      console.error("Error message:", error.message);
+      res
+        .status(500)
+        .json({ error: "Error fetching videos: " + error.message });
+    }
   }
 }
