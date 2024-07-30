@@ -28,10 +28,16 @@ const Main: React.FC = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await axios.get<Video[]>("/api/getVideo");
-        setVideos(response.data);
+        const response = await fetch("/api/getVideo");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data: Video[] = await response.json();
+        setVideos(data);
       } catch (error) {
-        setError("Error fetching videos");
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        setError(`Error fetching videos: ${errorMessage}`);
         console.error("Error fetching videos:", error);
       }
     };
@@ -46,24 +52,6 @@ const Main: React.FC = () => {
       setRandomVideo(video);
     }
   };
-
-  // const handleOutsideClick = (event: MouseEvent) => {
-  //   if (
-  //     cardRef.current &&
-  //     lionMapRef.current &&
-  //     !cardRef.current.contains(event.target as Node) &&
-  //     !lionMapRef.current.contains(event.target as Node)
-  //   ) {
-  //     setSelectedVideo(null);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleOutsideClick);
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleOutsideClick);
-  //   };
-  // }, []);
 
   function handleTitle(title: string): string {
     const prefix = "[사자왕자의 노래방]";
@@ -177,7 +165,9 @@ const Main: React.FC = () => {
         {selectedVideo && (
           <>
             <div className="fixed bottom-6 left-0 w-full text-white py-2 flex flex-col gap-4 justify-center items-center z-10">
-              <h3 className="font-brush text-lg">사자왕자의 다른 노래 들으러 가기</h3>
+              <h3 className="font-brush text-lg">
+                사자왕자의 다른 노래 들으러 가기
+              </h3>
               <ul className="flex gap-8">
                 <li>
                   <a
