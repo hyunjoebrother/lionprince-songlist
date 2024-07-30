@@ -10,8 +10,11 @@ type Video = {
   thumbnail: string;
 };
 
-const API_KEY = process.env.YOUTUBE_API_KEY;
-const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
+// const API_KEY = process.env.YOUTUBE_API_KEY;
+// const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
+
+const API_KEY = 'AIzaSyCmgJRbQ9pVis0Wyw-dnjnQPAev0ijr0Yg'
+const CHANNEL_ID = 'UCotHswCIyQrBZjNOYEVg7CA'
 
 export default async function handler(
   req: NextApiRequest,
