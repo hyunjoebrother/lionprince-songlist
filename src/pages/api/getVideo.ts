@@ -1,6 +1,5 @@
 export const runtime = "edge";
-import type { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
 
 type Video = {
   title: string;
@@ -10,40 +9,26 @@ type Video = {
   thumbnail: string;
 };
 
-// const API_KEY = process.env.YOUTUBE_API_KEY;
-// const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
+const API_KEY = process.env.YOUTUBE_API_KEY;
+const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 
-const API_KEY = 'AIzaSyCmgJRbQ9pVis0Wyw-dnjnQPAev0ijr0Yg'
-const CHANNEL_ID = 'UCotHswCIyQrBZjNOYEVg7CA'
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Video[] | { error: string }>
-): Promise<void> {
+export default async function handler(req: NextRequest) {
   try {
     if (!API_KEY || !CHANNEL_ID) {
       throw new Error("Missing API_KEY or CHANNEL_ID");
     }
 
-    console.log("API_KEY:", API_KEY); 
-    console.log("CHANNEL_ID:", CHANNEL_ID);
-
-    const response = await axios.get(
-      "https://www.googleapis.com/youtube/v3/search",
-      {
-        params: {
-          key: API_KEY,
-          channelId: CHANNEL_ID,
-          part: "snippet",
-          order: "date",
-          maxResults: 20,
-        },
-      }
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=20`
     );
 
-    console.log("YouTube API response:", response.data);
+    if (!response.ok) {
+      throw new Error(`YouTube API request failed: ${response.statusText}`);
+    }
 
-    const videos: Video[] = response.data.items.map((item: any) => ({
+    const data = await response.json();
+
+    const videos: Video[] = data.items.map((item: any) => ({
       title: item.snippet.title,
       description: item.snippet.description,
       publishedAt: item.snippet.publishedAt,
@@ -51,13 +36,12 @@ export default async function handler(
       thumbnail: item.snippet.thumbnails.high.url,
     }));
 
-    res.status(200).json(videos);
+    return NextResponse.json(videos);
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error:", error.response?.data);
-    } else {
-      console.error("Error fetching videos:", error);
-    }
-    res.status(500).json({ error: "Error fetching videos" });
+    console.error("Error fetching videos:", error);
+    return NextResponse.json(
+      { error: "Error fetching videos" },
+      { status: 500 }
+    );
   }
 }
