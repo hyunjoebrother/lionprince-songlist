@@ -8,6 +8,7 @@ import songIcon from "../../public/images/icon-song.png";
 import youtubeIcon from "../../public/images/icon-youtube.png";
 import instaIcon from "../../public/images/icon-insta.png";
 import mailIcon from "../../public/images/icon-mail.png";
+import HeadMeta from "./components/HeadMeta/HeadMeta";
 
 type Video = {
   title: string;
@@ -94,6 +95,7 @@ const Main: React.FC = () => {
 
   return (
     <>
+      <HeadMeta />
       <Stars />
       <section className="w-full flex 2xs:flex-col xs:flex-col 2sm:flex-col sm:flex-col min-h-screen items-center justify-center">
         <div className="absolute 2xs:top-4 2xs:right-4 xs:top-4 xs:right-4 2sm:top-6 2sm:right-6 sm:top-8 sm:right-6 tb:top-6 tb:right-6 lg:top-10 lg:right-8 text-right z-30">
