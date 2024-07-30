@@ -96,10 +96,12 @@ const Main: React.FC = () => {
     <>
       <Stars />
       <section className="w-full flex min-h-screen items-center justify-center">
-        <div className="absolute top-10 right-8 text-right">
+        <div className="absolute 2xs:top-4 2xs:right-4 xs:top-4 xs:right-4 2sm:top-6 2sm:right-6 sm:top-8 sm:right-6 tb:top-6 tb:right-6 lg:top-10 lg:right-8 text-right">
           <a href="/">
-            <h3 className="font-brush text-white text-2xl">LION PRINCE</h3>
-            <h1 className="font-brush text-white text-4xl">
+            <h3 className="font-brush text-white 2xs:text-lg xs:text-lg text-xl tb:text-2xl lg:text-2xl">
+              LION PRINCE
+            </h3>
+            <h1 className="font-brush text-white 2xs:text-lg xs:text-lg text-xl tb:text-2xl lg:text-4xl">
               사자왕자의 노래 하나
             </h1>
           </a>
@@ -107,21 +109,21 @@ const Main: React.FC = () => {
 
         <div
           ref={lionMapRef}
-          className="relative flex w-[44vw] h-[auto] justify-center items-center lion-map"
+          className="relative flex 2xs:absolute 2xs:top-28 2xs:w-[84vw] xs:absolute xs:top-32 xs:w-[80vw] 2sm:absolute 2sm:top-40 2sm:w-[72vw] sm:pb-10 sm:w-[68vw] tb:w-[50vw] lg:w-[44vw] h-[auto] justify-center items-center lion-map"
         >
           <LionMap lionBg={lionBg.src} handleAreaClick={handleAreaClick} />
 
           {selectedVideo && (
             <div
               ref={cardRef}
-              className="w-full h-full ml-8 text-xs flex flex-col gap-3 z-10 border-white border-[1px] rounded-lg justify-center items-center"
+              className="w-full h-full lg:ml-8 text-xs flex flex-col gap-3 z-10 border-white border-[1px] rounded-lg justify-center items-center"
             >
-              <div className="w-[300px] flex flex-col justify-center items-center rounded-lg p-3 shadow-lg">
+              <div className=" lg:w-[300px] flex flex-col justify-center items-center rounded-lg p-3 shadow-lg">
                 <div className="relative inline-block">
                   <img
                     src={songIcon.src}
                     alt=""
-                    className="pt-1 w-12 h-12 cursor-pointer"
+                    className="pt-1 lg:w-12 lg:h-12 cursor-pointer"
                   />
                 </div>
                 <a
@@ -135,11 +137,11 @@ const Main: React.FC = () => {
                     className="w-full h-auto rounded-lg"
                   />
                 </a>
-                <h2 className="flex flex-row text-xl font-bold text-white border-b-[.6px] border-white pb-1">
+                <h2 className="flex flex-row lg:text-xl font-bold text-white border-b-[.6px] border-white pb-1">
                   {handleTitle(selectedVideo.title)}
                 </h2>
 
-                <p className="mt-3 p-2 text-lg font-normal text-white font-brush">
+                <p className="mt-3 p-2 lg:text-lg font-normal text-white font-brush">
                   {handleHashtag(selectedVideo.description)}
                 </p>
                 <a
@@ -147,7 +149,7 @@ const Main: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <p className="mt-2 bg-[#73695C] text-white text-xs rounded py-1 px-2">
+                  <p className="mt-2 bg-[#73695C] text-white lg:text-xs rounded py-1 px-2">
                     노래 들으러 가기
                   </p>
                 </a>
@@ -157,14 +159,14 @@ const Main: React.FC = () => {
         </div>
 
         {!selectedVideo && (
-          <p className="absolute bottom-16 font-brush text-white text-2xl">
+          <p className="absolute 2xs:flex 2xs:mt-10 xs:flex xs:mt-56 2sm:flex 2sm:mt-32 sm:bottom-28 tb:bottom-24 lg:bottom-16 font-brush text-white 2xs:text-lg xs:text-lg 2sm:text-xl sm:text-xl text-2xl">
             이미지를 클릭하여 사자왕자의 노래를 추천받아보세요!
           </p>
         )}
 
         {selectedVideo && (
           <>
-            <div className="fixed bottom-6 left-0 w-full text-white py-2 flex flex-col gap-4 justify-center items-center z-10">
+            <div className="fixed lg:bottom-10 left-0 w-full text-white py-2 flex flex-col gap-4 justify-center items-center z-10">
               <h3 className="font-brush text-lg">
                 사자왕자의 다른 노래 들으러 가기
               </h3>
