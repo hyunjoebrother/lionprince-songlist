@@ -46,23 +46,30 @@ export default async function handler(
 
     res.status(200).json(videos);
   } catch (error: any) {
-    if (error.response) {
-      console.error("Error response:", error.response.data);
-      res
-        .status(500)
-        .json({
-          error: "Error fetching videos: " + error.response.data.error.message,
-        });
-    } else if (error.request) {
-      console.error("Error request:", error.request);
-      res
-        .status(500)
-        .json({ error: "Error fetching videos: No response received" });
+    console.error("Error fetching videos:", error);
+
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        res
+          .status(500)
+          .json({
+            error: `Error fetching videos: ${error.response.data.error.message}`,
+          });
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+        res
+          .status(500)
+          .json({ error: "Error fetching videos: No response received" });
+      } else {
+        console.error("Error message:", error.message);
+        res
+          .status(500)
+          .json({ error: `Error fetching videos: ${error.message}` });
+      }
     } else {
-      console.error("Error message:", error.message);
-      res
-        .status(500)
-        .json({ error: "Error fetching videos: " + error.message });
+      console.error("Unexpected error:", error);
+      res.status(500).json({ error: "Unexpected error occurred" });
     }
   }
 }
