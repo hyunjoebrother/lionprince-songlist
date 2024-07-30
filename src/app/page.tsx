@@ -47,23 +47,23 @@ const Main: React.FC = () => {
     }
   };
 
-  const handleOutsideClick = (event: MouseEvent) => {
-    if (
-      cardRef.current &&
-      lionMapRef.current &&
-      !cardRef.current.contains(event.target as Node) &&
-      !lionMapRef.current.contains(event.target as Node)
-    ) {
-      setSelectedVideo(null);
-    }
-  };
+  // const handleOutsideClick = (event: MouseEvent) => {
+  //   if (
+  //     cardRef.current &&
+  //     lionMapRef.current &&
+  //     !cardRef.current.contains(event.target as Node) &&
+  //     !lionMapRef.current.contains(event.target as Node)
+  //   ) {
+  //     setSelectedVideo(null);
+  //   }
+  // };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleOutsideClick);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleOutsideClick);
+  //   };
+  // }, []);
 
   function handleTitle(title: string): string {
     const prefix = "[사자왕자의 노래방]";
@@ -112,7 +112,7 @@ const Main: React.FC = () => {
           <a href="/">
             <h3 className="font-brush text-white text-2xl">LION PRINCE</h3>
             <h1 className="font-brush text-white text-4xl">
-              사자왕자의 노래 모음
+              사자왕자의 노래 하나
             </h1>
           </a>
         </div>
@@ -176,8 +176,8 @@ const Main: React.FC = () => {
 
         {selectedVideo && (
           <>
-            <div className="fixed bottom-6 left-0 w-full text-white py-2 flex flex-col gap-4 justify-center items-center">
-              <h3 className="font-brush text-lg">사자왕자 (@lionprince.x)</h3>
+            <div className="fixed bottom-6 left-0 w-full text-white py-2 flex flex-col gap-4 justify-center items-center z-10">
+              <h3 className="font-brush text-lg">사자왕자의 다른 노래 들으러 가기</h3>
               <ul className="flex gap-8">
                 <li>
                   <a
