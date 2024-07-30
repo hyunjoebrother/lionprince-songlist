@@ -50,6 +50,7 @@ export default async function handler(
 
     if (axios.isAxiosError(error)) {
       if (error.response) {
+        // 서버가 응답을 했지만, 2xx 범위의 상태 코드는 아님
         console.error("Error response:", error.response.data);
         res
           .status(500)
@@ -57,11 +58,13 @@ export default async function handler(
             error: `Error fetching videos: ${error.response.data.error.message}`,
           });
       } else if (error.request) {
+        // 요청이 만들어졌으나, 응답을 받지 못함
         console.error("Error request:", error.request);
         res
           .status(500)
           .json({ error: "Error fetching videos: No response received" });
       } else {
+        // 요청을 만들던 중에 에러가 발생
         console.error("Error message:", error.message);
         res
           .status(500)
