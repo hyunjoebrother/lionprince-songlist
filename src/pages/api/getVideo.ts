@@ -1,5 +1,6 @@
 export const runtime = "edge";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import axios, { AxiosError } from "axios";
 
 type Video = {
@@ -43,7 +44,7 @@ export default async function handler(
       thumbnail: item.snippet.thumbnails.high.url,
     }));
 
-    return res.status(200).json(videos);
+    return NextResponse.json(videos);
   } catch (error) {
     console.error("Error fetching videos:", error);
 
@@ -58,29 +59,36 @@ export default async function handler(
           const errorMessage = (data as { error: { message: string } }).error
             .message;
           console.error("Error response:", errorMessage);
-          return res
-            .status(status)
-            .json({ error: `Error fetching videos: ${errorMessage}` });
+          return NextResponse.json(
+            { error: `Error fetching videos: ${errorMessage}` },
+            { status }
+          );
         } else {
           console.error("Error response:", data);
-          return res
-            .status(status)
-            .json({ error: `Error fetching videos: ${JSON.stringify(data)}` });
+          return NextResponse.json(
+            { error: `Error fetching videos: ${JSON.stringify(data)}` },
+            { status }
+          );
         }
       } else if (axiosError.request) {
         console.error("Error request:", axiosError.request);
-        return res
-          .status(500)
-          .json({ error: "Error fetching videos: No response received" });
+        return NextResponse.json(
+          { error: "Error fetching videos: No response received" },
+          { status: 500 }
+        );
       } else {
         console.error("Error message:", axiosError.message);
-        return res
-          .status(500)
-          .json({ error: `Error fetching videos: ${axiosError.message}` });
+        return NextResponse.json(
+          { error: `Error fetching videos: ${axiosError.message}` },
+          { status: 500 }
+        );
       }
     } else {
       console.error("Unexpected error:", error);
-      return res.status(500).json({ error: "Unexpected error occurred" });
+      return NextResponse.json(
+        { error: "Unexpected error occurred" },
+        { status: 500 }
+      );
     }
   }
 }
