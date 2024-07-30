@@ -25,7 +25,7 @@ export default async function handler(
           channelId: CHANNEL_ID,
           part: "snippet",
           order: "date",
-          maxResults: 30,
+          maxResults: 20,
         },
       }
     );
