@@ -1,4 +1,4 @@
-export const runtime = "edge"
+export const runtime = "edge";
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
@@ -21,6 +21,10 @@ export default async function handler(
     const response = await axios.get(
       "https://www.googleapis.com/youtube/v3/search",
       {
+        headers: {
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
         params: {
           key: API_KEY,
           channelId: CHANNEL_ID,
