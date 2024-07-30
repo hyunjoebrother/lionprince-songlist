@@ -18,7 +18,7 @@ export default async function handler(
   res: NextApiResponse<Video[] | { error: string }>
 ): Promise<void> {
   if (!API_KEY || !CHANNEL_ID) {
-    res.status(500).json({ error: "API Key or Channel ID not set" });
+    res.json({ error: "API Key or Channel ID not set" });
     return;
   }
 
@@ -44,7 +44,7 @@ export default async function handler(
       thumbnail: item.snippet.thumbnails.high.url,
     }));
 
-    res.status(200).json(videos);
+    res.json(videos);
   } catch (error) {
     console.error("Error fetching videos:", error);
 
@@ -56,36 +56,24 @@ export default async function handler(
         const data = axiosError.response.data;
 
         if (typeof data === "object" && data !== null && "error" in data) {
-          // 유효한 에러 메시지가 있는 경우
           const errorMessage = (data as { error: { message: string } }).error
             .message;
           console.error("Error response:", errorMessage);
-          res
-            .status(status)
-            .json({ error: `Error fetching videos: ${errorMessage}` });
+          res.json({ error: `Error fetching videos: ${errorMessage}` });
         } else {
-          // 에러 메시지가 유효하지 않은 경우
           console.error("Error response:", data);
-          res
-            .status(status)
-            .json({ error: `Error fetching videos: ${JSON.stringify(data)}` });
+          res.json({ error: `Error fetching videos: ${JSON.stringify(data)}` });
         }
       } else if (axiosError.request) {
-        // 요청이 만들어졌으나, 응답을 받지 못함
         console.error("Error request:", axiosError.request);
-        res
-          .status(500)
-          .json({ error: "Error fetching videos: No response received" });
+        res.json({ error: "Error fetching videos: No response received" });
       } else {
-        // 요청을 만들던 중에 에러가 발생
         console.error("Error message:", axiosError.message);
-        res
-          .status(500)
-          .json({ error: `Error fetching videos: ${axiosError.message}` });
+        res.json({ error: `Error fetching videos: ${axiosError.message}` });
       }
     } else {
       console.error("Unexpected error:", error);
-      res.status(500).json({ error: "Unexpected error occurred" });
+      res.json({ error: "Unexpected error occurred" });
     }
   }
 }
