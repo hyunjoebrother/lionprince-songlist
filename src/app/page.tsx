@@ -28,12 +28,11 @@ const Main: React.FC = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await fetch(
-          "https://lionprince-song.pages.dev/api/getVideo"
-        );
+        const response = await fetch("/api/getVideo");
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        console.log('ddd', response)
         const data: Video[] = await response.json();
         setVideos(data);
       } catch (error) {
