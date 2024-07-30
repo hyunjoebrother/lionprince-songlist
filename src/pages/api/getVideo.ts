@@ -1,5 +1,6 @@
 export const runtime = "edge";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import axios, { AxiosError } from "axios";
 
 type Video = {
@@ -13,13 +14,12 @@ type Video = {
 const API_KEY = process.env.YOUTUBE_API_KEY;
 const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Video[] | { error: string }>
-): Promise<void> {
+export async function GET(request: NextRequest) {
   if (!API_KEY || !CHANNEL_ID) {
-    res.json({ error: "API Key or Channel ID not set" });
-    return;
+    return NextResponse.json(
+      { error: "API Key or Channel ID not set" },
+      { status: 500 }
+    );
   }
 
   try {
@@ -44,7 +44,7 @@ export default async function handler(
       thumbnail: item.snippet.thumbnails.high.url,
     }));
 
-    res.json(videos);
+    return NextResponse.json(videos);
   } catch (error) {
     console.error("Error fetching videos:", error);
 
@@ -59,21 +59,36 @@ export default async function handler(
           const errorMessage = (data as { error: { message: string } }).error
             .message;
           console.error("Error response:", errorMessage);
-          res.json({ error: `Error fetching videos: ${errorMessage}` });
+          return NextResponse.json(
+            { error: `Error fetching videos: ${errorMessage}` },
+            { status }
+          );
         } else {
           console.error("Error response:", data);
-          res.json({ error: `Error fetching videos: ${JSON.stringify(data)}` });
+          return NextResponse.json(
+            { error: `Error fetching videos: ${JSON.stringify(data)}` },
+            { status }
+          );
         }
       } else if (axiosError.request) {
         console.error("Error request:", axiosError.request);
-        res.json({ error: "Error fetching videos: No response received" });
+        return NextResponse.json(
+          { error: "Error fetching videos: No response received" },
+          { status: 500 }
+        );
       } else {
         console.error("Error message:", axiosError.message);
-        res.json({ error: `Error fetching videos: ${axiosError.message}` });
+        return NextResponse.json(
+          { error: `Error fetching videos: ${axiosError.message}` },
+          { status: 500 }
+        );
       }
     } else {
       console.error("Unexpected error:", error);
-      res.json({ error: "Unexpected error occurred" });
+      return NextResponse.json(
+        { error: "Unexpected error occurred" },
+        { status: 500 }
+      );
     }
   }
 }
