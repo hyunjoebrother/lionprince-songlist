@@ -95,8 +95,8 @@ const Main: React.FC = () => {
   return (
     <>
       <Stars />
-      <section className="w-full flex min-h-screen items-center justify-center">
-        <div className="absolute 2xs:top-4 2xs:right-4 xs:top-4 xs:right-4 2sm:top-6 2sm:right-6 sm:top-8 sm:right-6 tb:top-6 tb:right-6 lg:top-10 lg:right-8 text-right">
+      <section className="w-full flex 2xs:flex-col xs:flex-col 2sm:flex-col sm:flex-col min-h-screen items-center justify-center">
+        <div className="absolute 2xs:top-4 2xs:right-4 xs:top-4 xs:right-4 2sm:top-6 2sm:right-6 sm:top-8 sm:right-6 tb:top-6 tb:right-6 lg:top-10 lg:right-8 text-right z-30">
           <a href="/">
             <h3 className="font-brush text-white 2xs:text-lg xs:text-lg text-xl tb:text-2xl lg:text-2xl">
               LION PRINCE
@@ -109,21 +109,21 @@ const Main: React.FC = () => {
 
         <div
           ref={lionMapRef}
-          className="relative flex 2xs:absolute 2xs:top-28 2xs:w-[84vw] xs:absolute xs:top-32 xs:w-[80vw] 2sm:absolute 2sm:top-40 2sm:w-[72vw] sm:pb-10 sm:w-[68vw] tb:w-[50vw] lg:w-[44vw] h-[auto] justify-center items-center lion-map"
+          className="relative flex 2xs:flex-col xs:flex-col 2sm:flex-col sm:flex-col 2xs:absolute 2xs:top-28 2xs:w-[84vw] xs:absolute xs:top-32 xs:w-[80vw] 2sm:absolute 2sm:top-36 2sm:w-[72vw] sm:pb-10 sm:w-[68vw] tb:w-[50vw] lg:w-[44vw] h-[auto] justify-center items-center lion-map"
         >
           <LionMap lionBg={lionBg.src} handleAreaClick={handleAreaClick} />
 
           {selectedVideo && (
             <div
               ref={cardRef}
-              className="w-full h-full lg:ml-8 text-xs flex flex-col gap-3 z-10 border-white border-[1px] rounded-lg justify-center items-center"
+              className="w-full h-full 2xs:mb-10 xs:mb-10 2sm:mb-10 sm:mb-10 tb:ml-6 lg:ml-8 text-xs flex flex-col gap-3 z-10 border-white border-[1px] rounded-lg justify-center items-center"
             >
-              <div className=" lg:w-[300px] flex flex-col justify-center items-center rounded-lg p-3 shadow-lg">
+              <div className="2xs:w-[236px] xs:w-[280px] 2sm:w-[260px] sm:w-[320px] tb:w-[248px] lg:w-[300px] flex flex-col justify-center items-center rounded-lg p-3 shadow-lg">
                 <div className="relative inline-block">
                   <img
                     src={songIcon.src}
                     alt=""
-                    className="pt-1 lg:w-12 lg:h-12 cursor-pointer"
+                    className="pt-1 2xs:w-8 2xs:h-8 xs:w-8 xs:h-8 2sm:w-10 2sm:h-10 sm:w-8 sm:h-8 w-10 h-10 lg:w-12 lg:h-12 cursor-pointer"
                   />
                 </div>
                 <a
@@ -137,11 +137,11 @@ const Main: React.FC = () => {
                     className="w-full h-auto rounded-lg"
                   />
                 </a>
-                <h2 className="flex flex-row lg:text-xl font-bold text-white border-b-[.6px] border-white pb-1">
+                <h2 className="flex flex-row xs:text-base text-lg lg:text-xl font-bold text-white border-b-[.6px] border-white pb-1">
                   {handleTitle(selectedVideo.title)}
                 </h2>
 
-                <p className="mt-3 p-2 lg:text-lg font-normal text-white font-brush">
+                <p className="mt-3 p-2 xs:text-sm text-base lg:text-lg font-normal text-white font-brush">
                   {handleHashtag(selectedVideo.description)}
                 </p>
                 <a
@@ -149,7 +149,7 @@ const Main: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <p className="mt-2 bg-[#73695C] text-white lg:text-xs rounded py-1 px-2">
+                  <p className="2xs:mt-5 xs:mt-5 2sm:mt-4 sm:mt-4 mt-2 bg-[#73695C] text-white font-medium text-[0.6rem] lg:text-xs rounded py-1 px-2">
                     노래 들으러 가기
                   </p>
                 </a>
@@ -166,11 +166,11 @@ const Main: React.FC = () => {
 
         {selectedVideo && (
           <>
-            <div className="fixed lg:bottom-10 left-0 w-full text-white py-2 flex flex-col gap-4 justify-center items-center z-10">
-              <h3 className="font-brush text-lg">
+            <div className="2xs:relative 2xs:mt-[100vh] xs:relative xs:mt-[128vh] 2sm:relative 2sm:mt-[108vh] sm:relative sm:mt-10 fixed bottom-4 tb:bottom-6 lg:bottom-6 left-0 w-full text-white py-2 flex flex-col gap-3 justify-center items-center z-10">
+              <h3 className="font-brush xs:text-base text-lg lg:text-xl">
                 사자왕자의 다른 노래 들으러 가기
               </h3>
-              <ul className="flex gap-8">
+              <ul className="flex gap-4 tb:gap-8 lg:gap-10">
                 <li>
                   <a
                     href="https://www.youtube.com/@lionprince.x"
@@ -180,7 +180,7 @@ const Main: React.FC = () => {
                     <img
                       src={youtubeIcon.src}
                       alt=""
-                      className="w-10 h-10 cursor-pointer"
+                      className="2xs:w-8 2xs:h-8 xs:w-8 xs:h-8 2sm:w-6 2sm:h-6 sm:w-8 sm:h-8 w-10 h-10 lg:w-12 lg:h-12 cursor-pointer"
                     />
                   </a>
                 </li>
@@ -193,7 +193,7 @@ const Main: React.FC = () => {
                     <img
                       src={instaIcon.src}
                       alt=""
-                      className="w-10 h-10 cursor-pointer"
+                      className="2xs:w-8 2xs:h-8 xs:w-8 xs:h-8 2sm:w-6 2sm:h-6  sm:w-8 sm:h-8 w-10 h-10 lg:w-12 lg:h-12 cursor-pointer"
                     />
                   </a>
                 </li>
@@ -205,11 +205,13 @@ const Main: React.FC = () => {
                   <img
                     src={mailIcon.src}
                     alt=""
-                    className="w-10 h-10 cursor-pointer"
+                    className="2xs:w-8 2xs:h-8 xs:w-8 xs:h-8 2sm:w-6 2sm:h-6  sm:w-8 sm:h-8 w-10 h-10 lg:w-12 lg:h-12 cursor-pointer"
                   />
                 </li>
               </ul>
-              <p className="text-xs font-brush text-gray-500">Made By Mei</p>
+              <p className="text-xs lg:text-base font-brush text-gray-500">
+                Made By Mei
+              </p>
             </div>
           </>
         )}
