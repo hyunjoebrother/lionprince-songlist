@@ -1,6 +1,5 @@
 export const runtime = "edge";
 import type { NextApiRequest, NextApiResponse } from "next";
-import axios from "axios";
 
 type Video = {
   title: string;
@@ -18,20 +17,17 @@ export default async function handler(
   res: NextApiResponse<Video[] | { error: string }>
 ): Promise<void> {
   try {
-    const response = await axios.get(
-      "https://www.googleapis.com/youtube/v3/search",
-      {
-        params: {
-          key: API_KEY,
-          channelId: CHANNEL_ID,
-          part: "snippet",
-          order: "date",
-          maxResults: 20,
-        },
-      }
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&maxResults=20`
     );
 
-    const videos: Video[] = response.data.items.map((item: any) => ({
+    if (!response.ok) {
+      throw new Error(`YouTube API responded with status ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    const videos: Video[] = data.items.map((item: any) => ({
       title: item.snippet.title,
       description: item.snippet.description,
       publishedAt: item.snippet.publishedAt,
