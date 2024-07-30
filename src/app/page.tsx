@@ -32,7 +32,6 @@ const Main: React.FC = () => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        console.log('ddd', response)
         const data: Video[] = await response.json();
         setVideos(data);
       } catch (error) {
